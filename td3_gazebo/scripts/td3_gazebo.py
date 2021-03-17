@@ -52,11 +52,11 @@ if __name__ == '__main__':
                         min_action=min_action, batch_size=bs, layer1_size=400, layer2_size=300, n_actions=env.action.shape[0], \
                         path_dir=path)
 
+    ep = ep_start
     if load_checkpoints:
         agent.load_models(ep)
 
-    score_history = []
-    ep = ep_start
+    score_history = []    
 
     #agent.load_models()
 

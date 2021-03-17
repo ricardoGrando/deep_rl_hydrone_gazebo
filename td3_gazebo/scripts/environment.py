@@ -109,9 +109,11 @@ class Env():
         return reward
 
     def step(self, action, past_action):
-        actions = T.tensor(action, dtype=T.float)
-        linear_vel_x = ((T.tanh(actions[0]) + 1.0)/2.0)*self.norm_value
-        angular_vel_z = T.tanh(actions[1])*self.norm_value
+        # actions = T.tensor(action, dtype=T.float)
+        # linear_vel_x = ((T.tanh(actions[0]) + 1.0)/2.0)*self.norm_value
+        # angular_vel_z = T.tanh(actions[1])*self.norm_value
+        linear_vel_x = action[0]
+        angular_vel_z = action[1]
 
         vel_cmd = Twist()
         vel_cmd.linear.x = linear_vel_x

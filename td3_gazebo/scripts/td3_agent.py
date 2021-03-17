@@ -39,7 +39,10 @@ class TD3Agent():
             mu = self.actor.forward(state).to(self.actor.device)
 
         mu_prime = mu + T.tensor(np.random.normal(scale=self.noise), dtype=T.float).to(self.actor.device)
-        mu_prime = T.clamp(mu_prime, self.min_action, self.max_action)
+        # mu_prime = T.clamp(mu_prime, self.min_action, self.max_action)
+        mu__ = mu_prime.detach().clone()
+        mu_prime[0] = T.clamp(mu__[0], 0.0, 0.25)
+        mu_prime[1] = T.clamp(mu__[1], -0.25, 0.25)
 
         self.time_step += 1
         return mu_prime.cpu().detach().numpy()
@@ -62,7 +65,10 @@ class TD3Agent():
         target_actions = self.target_actor.forward(state_)
         target_actions = target_actions + T.clamp(T.tensor(np.random.normal(scale=0.2)), -0.5, 0.5)
 
-        target_actions = T.clamp(target_actions, self.min_action, self.max_action)
+        # target_actions = T.clamp(target_actions, self.min_action, self.max_action)
+        t_a = target_actions.detach().clone()
+        target_actions[:,0] = T.clamp(t_a[:,0], 0.0, 0.25)
+        target_actions[:,1] = T.clamp(t_a[:,1], -0.25, 0.25)
         # for i in range(0, target_actions.shape[0]):
         #     target_actions[i][0] = T.clamp(target_actions[i][0], self.min_action[0], self.max_action[0])
         #     target_actions[i][1] = T.clamp(target_actions[i][1], self.min_action[1], self.max_action[1])

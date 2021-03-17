@@ -43,7 +43,7 @@ class CriticNetwork(nn.Module):
     def load_checkpoint(self, ep):
         print('...loading chekpoint')
         self.checkpoint_file = os.path.join(self.checkpoint_dir, self.name+'_td3_'+str(ep))
-        self.load_state_dict(self.checkpoint_file)
+        self.load_state_dict(T.load(self.checkpoint_file))
 
 class ActorNetwork(nn.Module):
     def __init__(self, alpha, input_dims, fc1_dims, fc2_dims, n_actions, name, chkpt_dir='model/td3'):
@@ -72,7 +72,7 @@ class ActorNetwork(nn.Module):
         prob = F.relu(prob)
 
         prob = T.tanh(self.mu(prob))
-
+        
         return prob
 
     def save_checkpoint(self, ep):
@@ -83,4 +83,4 @@ class ActorNetwork(nn.Module):
     def load_checkpoint(self, ep):
         print('...loading chekpoint')
         self.checkpoint_file = os.path.join(self.checkpoint_dir, self.name+'_td3_'+str(ep))
-        self.load_state_dict(self.checkpoint_file)
+        self.load_state_dict(T.load(self.checkpoint_file))
