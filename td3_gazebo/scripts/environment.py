@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import rospy
 import numpy as np
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
@@ -101,7 +101,7 @@ class Env():
             self.pub_cmd_vel.publish(Twist())
         if self.get_goalbox:
             rospy.loginfo("Goal!!")
-            reward = 10.
+            reward = 100.
             self.pub_cmd_vel.publish(Twist())
             self.get_goalbox = False
             self.reset()
@@ -153,7 +153,7 @@ class Env():
             except:
                 pass
 
-        self.goal_x = float(random.randint(-450, 450))/100
+        self.goal_x = float(random.randint(100, 450))/100
         self.goal_y = float(random.randint(-450, 450))/100
 
         self.goal_distance = self.get_goal_distance()
