@@ -17,6 +17,7 @@ class Env():
         self.action = np.zeros(shape=(action_dim,))
         self.env_name = env_name
         self.norm_value = norm_value
+        self.last_distance = np.inf
 
         self.sub_odom = rospy.Subscriber('/'+env_name+'/ground_truth/odometry', Odometry, self.get_odometry)
         self.reset_proxy = rospy.ServiceProxy('gazebo/reset_world', Empty)
@@ -62,7 +63,7 @@ class Env():
 
     def get_state(self, scan, past_action):
         heading = self.heading
-        current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y),2)
+        current_distance = self.get_goal_distance()
         scan_range = []
 
         done = False
@@ -105,6 +106,12 @@ class Env():
             self.pub_cmd_vel.publish(Twist())
             self.get_goalbox = False
             self.reset()
+        # if self.last_distance > self.get_goal_distance():
+        #     reward = 0.1
+        # if self.last_distance < self.get_goal_distance():
+        #     reward = -0.1
+        #
+        # self.last_distance = self.get_goal_distance()
 
         return reward
 
@@ -112,8 +119,9 @@ class Env():
         # actions = T.tensor(action, dtype=T.float)
         # linear_vel_x = ((T.tanh(actions[0]) + 1.0)/2.0)*self.norm_value
         # angular_vel_z = T.tanh(actions[1])*self.norm_value
-        linear_vel_x = action[0]
-        angular_vel_z = action[1]
+
+        linear_vel_x = ((action[0] + 1.0)/2.0)*self.norm_value
+        angular_vel_z = action[1]*self.norm_value
 
         vel_cmd = Twist()
         vel_cmd.linear.x = linear_vel_x
@@ -155,7 +163,7 @@ class Env():
             except:
                 pass
 
-        self.goal_x = float(random.randint(100, 450))/100
+        self.goal_x = float(random.randint(-450, 450))/100
         self.goal_y = float(random.randint(-450, 450))/100
 
         self.goal_distance = self.get_goal_distance()

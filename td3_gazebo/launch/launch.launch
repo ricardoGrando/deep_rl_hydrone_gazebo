@@ -32,7 +32,7 @@
   <arg name="normal_value" default="0.25"/>
   <arg name="las_samples" default="20"/>
   <arg name="environment_name" default="hydrone_aerial_underwater"/>
-  <arg name="max_act" default="1.0"/>
+  <arg name="max_act" default="1."/>
   <arg name="min_act" default="-1.0"/>
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
