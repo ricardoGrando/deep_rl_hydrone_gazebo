@@ -90,17 +90,18 @@ class Env():
 
         if current_distance < self.arriving_distance:
             self.get_goalbox = True
+            done = True
 
         return done
 
     def set_reward(self, done):
         reward = 0
 
-        if done:
+        if done and not self.get_goalbox:
             rospy.loginfo("Collision!!")
             reward = -10.
             self.pub_cmd_vel.publish(Twist())
-        if self.get_goalbox:
+        if done and self.get_goalbox:
             rospy.loginfo("Goal!!")
             reward = 100.
             self.pub_cmd_vel.publish(Twist())
