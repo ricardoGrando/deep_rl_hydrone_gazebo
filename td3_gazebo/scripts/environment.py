@@ -107,12 +107,12 @@ class Env():
             self.pub_cmd_vel.publish(Twist())
             self.get_goalbox = False
             self.reset()
-        # if self.last_distance > self.get_goal_distance():
-        #     reward = 0.1
-        # if self.last_distance < self.get_goal_distance():
-        #     reward = -0.1
-        #
-        # self.last_distance = self.get_goal_distance()
+        if self.last_distance > self.get_goal_distance() and not done and not self.get_goalbox:
+            reward = 0.1
+        if self.last_distance < self.get_goal_distance() and not done and not self.get_goalbox:
+            reward = -0.1
+
+        self.last_distance = self.get_goal_distance()
 
         return reward
 

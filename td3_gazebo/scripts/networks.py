@@ -17,8 +17,14 @@ class CriticNetwork(nn.Module):
         self.checkpoint_file = os.path.join(self.checkpoint_dir, name+'_td3')
 
         self.fc1 = nn.Linear(self.input_dims.shape[0] + n_actions, self.fc1_dims)
+        nn.init.xavier_uniform_(self.fc1.weight)
+        self.fc1.bias.data.fill_(0.01)
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
+        nn.init.xavier_uniform_(self.fc2.weight)
+        self.fc2.bias.data.fill_(0.01)
         self.q1 = nn.Linear(self.fc2_dims, 1)
+        nn.init.xavier_uniform_(self.q1.weight)
+        self.q1.bias.data.fill_(0.01)
 
         self.optimizer = optim.Adam(self.parameters(), lr=beta)
         self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
@@ -57,8 +63,14 @@ class ActorNetwork(nn.Module):
         self.checkpoint_file = os.path.join(self.checkpoint_dir, name+'_td3')
 
         self.fc1 = nn.Linear(self.input_dims.shape[0], self.fc1_dims)
+        nn.init.xavier_uniform_(self.fc1.weight)
+        self.fc1.bias.data.fill_(0.01)
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
+        nn.init.xavier_uniform_(self.fc2.weight)
+        self.fc2.bias.data.fill_(0.01)
         self.mu = nn.Linear(self.fc2_dims, self.n_actions)
+        nn.init.xavier_uniform_(self.mu.weight)
+        self.mu.bias.data.fill_(0.01)
 
         self.optimizer = optim.Adam(self.parameters(), lr=alpha)
         self.device = T.device('cuda:0' if T.cuda.is_available else 'cpu')
@@ -72,7 +84,7 @@ class ActorNetwork(nn.Module):
         prob = F.relu(prob)
 
         prob = T.tanh(self.mu(prob))
-        
+
         return prob
 
     def save_checkpoint(self, ep):

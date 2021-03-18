@@ -56,7 +56,7 @@ if __name__ == '__main__':
     if load_checkpoints:
         agent.load_models(ep)
 
-    score_history = []    
+    score_history = []
 
     #agent.load_models()
 
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         done = False
         score = 0
 
-        while not done:
+        while True:
              action = agent.choose_action(observation)
              past_action = observation[laser_samples:laser_samples+action_dim]
              observation_, reward, done = env.step(action, past_action)
@@ -74,6 +74,7 @@ if __name__ == '__main__':
              agent.learn()
              score += reward
              observation = observation_
+             if done: break
         score_history.append(score)
         avg_score = np.mean(score_history[-100:])
 

@@ -1,7 +1,7 @@
 import numpy as np
 
 class OUActionNoise():
-    def __init__(self, mu, sigma=0.5, theta=1.0, dt=1e-2, x0=None):
+    def __init__(self, mu, sigma=0.7, theta=0.15, dt=1e-2, x0=None):
         self.theta = theta
         self.mu = mu
         self.sigma = sigma
