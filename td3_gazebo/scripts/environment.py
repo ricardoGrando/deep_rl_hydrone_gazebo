@@ -101,22 +101,23 @@ class Env():
             rospy.loginfo("Collision!!")
             reward = -10.
             self.pub_cmd_vel.publish(Twist())
-        if done and self.get_goalbox:
+        elif done and self.get_goalbox:
             rospy.loginfo("Goal!!")
             reward = 100.
             self.pub_cmd_vel.publish(Twist())
             self.get_goalbox = False
             self.reset()
-        if self.last_distance > self.get_goal_distance() and not done and not self.get_goalbox:
-            reward = 0.1
-        if self.last_distance < self.get_goal_distance() and not done and not self.get_goalbox:
-            reward = -0.1
+        # else:
+        #     reward = -abs(past_action[1])/10.0
+        #     print(past_action)
+        # if self.last_distance < self.get_goal_distance() and not done and not self.get_goalbox:
+        #     reward = -0.1
 
-        self.last_distance = self.get_goal_distance()
+        # self.last_distance = self.get_goal_distance()
 
         return reward
 
-    def step(self, action, past_action):
+    def step(self, action):
         # actions = T.tensor(action, dtype=T.float)
         # linear_vel_x = ((T.tanh(actions[0]) + 1.0)/2.0)*self.norm_value
         # angular_vel_z = T.tanh(actions[1])*self.norm_value
@@ -139,7 +140,7 @@ class Env():
             except:
                 pass
 
-        done = self.get_state(data, past_action)
+        done = self.get_state(data, action)
         reward = self.set_reward(done)
 
         self.n_steps += 1

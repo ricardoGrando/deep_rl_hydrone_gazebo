@@ -49,7 +49,7 @@ if __name__ == '__main__':
     best_score = -np.inf
 
     agent = TD3Agent(alpha=alpha, beta=beta, input_dims=env.observation_space, tau=tau, max_action=max_action, \
-                        min_action=min_action, batch_size=bs, layer1_size=400, layer2_size=300, n_actions=env.action.shape[0], \
+                        min_action=min_action, batch_size=bs, layer1_size=512, layer2_size=512, n_actions=env.action.shape[0], \
                         path_dir=path)
 
     ep = ep_start
@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
         while True:
              action = agent.choose_action(observation)
-             past_action = observation[laser_samples:laser_samples+action_dim]
-             observation_, reward, done = env.step(action, past_action)
+             # past_action = observation[laser_samples:laser_samples+action_dim]
+             observation_, reward, done = env.step(action)
              # print(observation_)
              agent.remember(observation, action, reward, observation_, done)
              agent.learn()
