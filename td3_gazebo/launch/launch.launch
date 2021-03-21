@@ -22,7 +22,7 @@
   <arg name="lr_" default="0.0001"/>
   <arg name="gamma_" default="0.99"/>
   <arg name="max_mem_" default="50000"/>
-  <arg name="bs_" default="32"/>
+  <arg name="bs_" default="256"/>
   <arg name="replace_" default="1000"/>
   <arg name="gpu_" default="0"/>
   <arg name="load_checkpoints_" default="False"/>
