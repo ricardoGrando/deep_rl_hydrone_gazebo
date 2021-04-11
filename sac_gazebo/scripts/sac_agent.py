@@ -118,4 +118,3 @@ class SACAgent():
         self.target_value.load_checkpoint(episode)
         self.critic_1.load_checkpoint(episode)
         self.critic_2.load_checkpoint(episode)
-        

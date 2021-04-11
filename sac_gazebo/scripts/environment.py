@@ -25,7 +25,7 @@ class Env():
 
         self.goal_x = -2.0
         self.goal_y = -2.0
-        self.arriving_distance = 0.25
+        self.arriving_distance = 0.5
         self.min_range = 0.6
         self.goal_distance = 0.0
 
